@@ -1,0 +1,19 @@
+{
+  "name": "caf_deploy",
+  "description": "Cloud Assistants lib for deploying apps in CF",
+  "version": "0.0.1",
+  "author": "Antonio Lain <antlai@cafjs.com>",
+  "dependencies": {
+      "caf_core" : ">= 0.0.1",
+      "rimraf" : ">= 2.0.1",
+      "tar" : ">= 0.1.13",
+      "vmcjs" : ">= 0.1.8"
+  },
+  "main": "index",
+    "homepage": "http://www.cafjs.com",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cafjs/caf_deploy.git"
+    },
+  "engines": { "node": ">= 0.8.1 " }
+}

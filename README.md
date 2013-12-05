@@ -26,8 +26,9 @@ See the Turtles example application.
             "description": "Shared connection to a service that deploys apps in CF\n Properties: \n",
             "env": {
                 "target" : "http://api.cafjs.com",
-                "user" : "bad@bar.com",
-                "password" : "supersecret",
+                "user" : "foo@bar.com",
+                "password" : "pleasechange",
+                "map": null,
                 "memory" : 64,
                 "instances": 1,
                 "services" :["redis"]
@@ -35,7 +36,7 @@ See the Turtles example application.
           }
         
         
-The properties define the vcap target, username, and password. They also specify how many instances should host you application, the maximum memory the can use, and the extra services that your application needs.
+The properties define the vcap target, username, and password. They also specify how many instances should host you application, the maximum memory the can use, and the extra services that your application needs. Optionally, we can specify a new mapping url (e.g., http://api.whatever.com) where `api` is replaced by the application name (`null` is used as a placeholder for tools that configure this option).
         
 
 ### ca.json

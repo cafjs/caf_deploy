@@ -1,13 +1,15 @@
 {
   "name": "caf_deploy",
-  "description": "Cloud Assistants lib for deploying apps in CF",
-  "version": "0.0.7",
+  "description": "Cloud Assistants lib for deploying apps in Cloud Foundry v2",
+  "version": "0.1.0",
   "author": "Antonio Lain <antlai@cafjs.com>",
   "dependencies": {
-      "caf_core" : ">= 0.0.1",
-      "rimraf" : ">= 2.0.1",
-      "tar" : ">= 0.1.13",
-      "vmcjs" : ">= 0.1.8"
+      "caf_core" : "^0.1",
+      "rimraf" : "^2.0.1",
+      "tar" : "^0.1.13",
+      "form-data" : "^0.1.4",
+      "request" : "^2.36.0",
+      "cloud-foundry" : ">= 0.0.2"
   },
   "main": "index",
     "homepage": "http://www.cafjs.com",

@@ -1,0 +1,41 @@
+{
+    "id": "{{{id}}}",
+    "container": {
+        "type":"DOCKER",
+        "docker": {
+            "image":"{{{image}}}",
+            "network":"BRIDGE",
+            "portMappings":[
+                {
+                    "containerPort":3000,
+                    "hostPort":0,
+                    "protocol":"tcp"
+                }
+            ],
+            "privileged":false,
+            "parameters":[
+                {
+                    "key":"env",
+                    "value":"REDIS_PORT_6379_TCP_PORT={{{redisPort}}}"
+                },
+                {
+                    "key":"env",
+                    "value":"DOCKER_APP_INTERNAL_PORT=3000"
+                },
+                {
+                    "key":"env",
+                    "value":"APP_PUBLISHER={{{appPublisher}}}"
+                },
+                {
+                    "key":"env",
+                    "value":"APP_LOCAL_NAME={{{appLocalName}}}"
+                }
+            ],
+            "forcePullImage":true
+        }
+    },
+    "args": {{{args}}}{{^args}}[]{{/args}},
+    "cpus": {{{cpus}}},
+    "mem": {{{memory}}},
+    "instances": {{{instances}}}
+}

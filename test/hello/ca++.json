@@ -1,0 +1,28 @@
+{
+    "name" : "ca",
+    "components" : [
+        {
+            "name": "security",
+            "module": null
+        },
+        {
+            "module": "../../index.js#plug_ca",
+            "name": "deploy",
+            "description": "Manages deployments for this CA.",
+            "env" : {
+                "maxRetries" : "$._.env.maxRetries",
+                "retryDelay" : "$._.env.retryDelay"
+            },
+            "components" : [
+                {
+                    "module": "../../index.js#proxy",
+                    "name": "proxy",
+                    "description": "Provides deployment API.",
+                    "env" : {
+
+                    }
+                }
+            ]
+        }
+    ]
+}

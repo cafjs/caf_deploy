@@ -1,0 +1,43 @@
+{
+    "name": "top",
+    "env" : {
+        "appPublisher" :"root",
+        "appLocalName" : "test",
+        "appSuffix" : "vcap.me"
+    },
+    "components": [
+        {
+            "name": "security",
+            "module": null
+        },
+        {
+            "module": "../../index.js#plug",
+            "name": "deploy",
+            "description": "Shared plug to deploy apps in Mesos/Marathon\n Properties: \n",
+            "env": {
+                "refreshInterval" : "process.env.REFRESH_INTERVAL||1000",
+                "target" : "process.env.MARATHON_TARGET||http://localhost:8080",
+                "username" : "process.env.MARATHON_USERNAME||root",
+                "password" : "process.env.MARATHON_KEY_PASSWORD||pleasechange",
+                "redis" : {
+                    "templateFile" : "process.env.REDIS_TEMPLATE_FILE||marathon.redis.mus",
+                    "prefixID": "process.env.REDIS_PREFIX_ID||redis",
+                    "rangePortStart" : "process.env.REDIS_RANGE_PORT_START||7380",
+                    "rangePortEnd" : "process.env.REDIS_RANGE_PORT_END||7480",
+                    "hostname" : "process.env.REDIS_HOSTNAME||10.0.0.15",
+                    "image" : "process.env.REDIS_IMAGE||redis:2.8",
+                    "cpus" : "process.env.REDIS_CPUS||0.1",
+                    "memory" : "process.env.REDIS_MEMORY||64.0"
+                },
+                "app" : {
+                    "templateFile" : "process.env.APP_TEMPLATE_FILE||marathon.app.mus",
+                    "args": "process.env.APP_ARGS||[]",
+                    "cpus" : "process.env.APP_CPUS||0.1",
+                    "memory" : "process.env.APP_MEMORY||64.0",
+                    "instances": "process.env.APP_INSTANCES||1",
+                    "services" :["redis"]
+                }
+            }
+        }
+    ]
+}

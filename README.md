@@ -6,66 +6,72 @@ See http://www.cafjs.com
 
 ## CAF Extra Deploy
 
-This repository contains a CAF extra lib to deploy applications in Cloud Foundry.
+This repository contains a CAF  lib to deploy applications in Mesos/Marathon.
 
 
 ## API
 
     lib/proxy_deploy.js
 
-See the Turtles example application.
+See the `caf_turtles` application for an example.
  
 ## Configuration Example
 
 ### framework.json
 
-       "plugs": [
-           {
-            "module": "caf_deploy/plug",
-            "name": "deploy_mux",
-            "description": "Shared connection to a service that deploys apps in CF\n Properties: \n",
-            "env": {
-                "target" : "http://api.cafjs.com",
-                "user" : "foo@bar.com",
-                "password" : "pleasechange",
-                "map": null,
-                "memory" : 64,
-                "instances": 1,
+    {
+        "module": "caf_deploy#plug",
+        "name": "deploy",
+        "description": "Shared plug to deploy apps in Mesos/Marathon\n Properties: \n",
+        "env": {
+            "refreshInterval" : "process.env.REFRESH_INTERVAL||1000",
+            "target" : "process.env.MARATHON_TARGET||http://localhost:8080",
+            "username" : "process.env.MARATHON_USERNAME||root",
+            "password" : "process.env.MARATHON_KEY_PASSWORD||pleasechange",
+            "redis" : {
+                "templateFile" : "process.env.REDIS_TEMPLATE_FILE||marathon.redis.mus",
+                "prefixID": "process.env.REDIS_PREFIX_ID||redis",
+                "rangePortStart" : "process.env.REDIS_RANGE_PORT_START||6380",
+                "rangePortEnd" : "process.env.REDIS_RANGE_PORT_END||6480",
+                "hostname" : "process.env.REDIS_HOSTNAME||redisHost1",
+                "image" : "process.env.REDIS_IMAGE||redis:2.8",
+                "cpus" : "process.env.REDIS_CPUS||0.1",
+                "memory" : "process.env.REDIS_MEMORY||64.0"
+            },
+            "app" : {
+                "templateFile" : "process.env.APP_TEMPLATE_FILE||marathon.app.mus",
+                "args": "process.env.APP_ARGS||[]",
+                "cpus" : "process.env.APP_CPUS||0.1",
+                "memory" : "process.env.APP_MEMORY||64.0",
+                "instances": "process.env.APP_INSTANCES||1",
                 "services" :["redis"]
             }
-          }
+        }
+    }
         
         
-The properties define the vcap target, username, and password. They also specify how many instances should host you application, the maximum memory the can use, and the extra services that your application needs. Optionally, we can specify a new mapping url (e.g., http://api.whatever.com) where `api` is replaced by the application name (`null` is used as a placeholder for tools that configure this option).
+The properties define the Marathon/Mesos target URL, username, and password. 
         
 
 ### ca.json
 
-    "internal" : [
         {
-            "module": "caf_deploy/plug_ca",
-            "name": "deploy_ca",
-            "description": "Provides a  service  to deploy apps for this CA",
-            "env" : {
-
-            }
-        }
-        ...
-     ]
-     "proxies" : [
-       {
-            "module": "caf_deploy/proxy",
+            "module": "caf_deploy#plug_ca",
             "name": "deploy",
-            "description": "Access to a service to deploy CF apps",
+            "description": "Manages deployments for this CA.",
             "env" : {
+                "maxRetries" : "$._.env.maxRetries",
+                "retryDelay" : "$._.env.retryDelay"
+            },
+            "components" : [
+                {
+                    "module": "caf_deploy#proxy",
+                    "name": "proxy",
+                    "description": "Provides deployment API.",
+                    "env" : {
 
-            }
-        },
-        ...
-      ]
-  
-  
-    
-        
-            
+                    }
+                }
+            ]
+        }
  

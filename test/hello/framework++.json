@@ -15,6 +15,7 @@
             "name": "deploy",
             "description": "Shared plug to deploy apps in Mesos/Marathon\n Properties: \n",
             "env": {
+                "listAllRedisPorts" : "process.env.LIST_ALL_REDIS_PORTS||true",
                 "refreshInterval" : "process.env.REFRESH_INTERVAL||1000",
                 "target" : "process.env.MARATHON_TARGET||http://localhost:8080",
                 "username" : "process.env.MARATHON_USERNAME||root",

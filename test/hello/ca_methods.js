@@ -49,6 +49,9 @@ exports.methods = {
         var all = this.$.deploy.statApps(ids);
         cb(null, all);
     },
+    getAllRedisPorts: function(cb) {
+        cb(null, this.$.deploy.getAllRedisPorts());
+    },
     addApp: function(appLocalName, image, options, cb) {
         var id = this.$.deploy.createApp(appLocalName, image, options);
         this.state.apps[appLocalName] = id;

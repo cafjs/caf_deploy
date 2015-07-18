@@ -45,7 +45,7 @@ module.exports = {
 
     oneDeploy: function(test) {
         var self = this;
-        test.expect(4);
+        test.expect(5);
 
         var s1;
         var from1 = FROM_1;
@@ -77,6 +77,14 @@ module.exports = {
                         s1.restartApp('myfoo1', cb);
                     }, 25000);
                 },
+                function(cb) {
+                     s1.getAllRedisPorts(function(err, data) {
+                         console.log(data);
+                         test.ok(Object.keys(data).length > 0);
+                         cb(err, data);
+                     });
+                },
+
                 function(cb) {
                     setTimeout(function() {
                         s1.deleteApp('myfoo1', cb);

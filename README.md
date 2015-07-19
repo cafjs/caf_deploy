@@ -25,7 +25,9 @@ See the `caf_turtles` application for an example.
         "description": "Shared plug to deploy apps in Mesos/Marathon\n Properties: \n",
         "env": {
             "refreshInterval" : "process.env.REFRESH_INTERVAL||1000",
-            "target" : "process.env.MARATHON_TARGET||http://localhost:8080",
+            "protocol" : "process.env.MARATHON_PROTOCOL||http",
+            "hostname" : "process.env.HOST||localhost",
+            "port" : ""process.env.MARATHON_PORT||8080",
             "username" : "process.env.MARATHON_USERNAME||root",
             "password" : "process.env.MARATHON_KEY_PASSWORD||pleasechange",
             "redis" : {

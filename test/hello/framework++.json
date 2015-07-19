@@ -17,7 +17,9 @@
             "env": {
                 "listAllRedisPorts" : "process.env.LIST_ALL_REDIS_PORTS||true",
                 "refreshInterval" : "process.env.REFRESH_INTERVAL||1000",
-                "target" : "process.env.MARATHON_TARGET||http://localhost:8080",
+                "protocol" : "process.env.MARATHON_PROTOCOL||http",
+                "hostname" : "process.env.HOST||localhost",
+                "port" : "process.env.MARATHON_PORT||8080",
                 "username" : "process.env.MARATHON_USERNAME||root",
                 "password" : "process.env.MARATHON_KEY_PASSWORD||pleasechange",
                 "redis" : {

@@ -7,7 +7,7 @@ var myUtils = caf_core.caf_components.myUtils;
 var async = caf_core.async;
 var cli = caf_core.caf_cli;
 
-var CA_OWNER_1='other1';
+var CA_OWNER_1='deployother1';
 var CA_LOCAL_NAME_1='bar1';
 var FROM_1 =  CA_OWNER_1 + '-' + CA_LOCAL_NAME_1;
 

@@ -6,6 +6,8 @@ See http://www.cafjs.com
 
 ## CAF Extra Deploy
 
+[![Build Status](http://ci.cafjs.com/api/badges/cafjs/caf_deploy/status.svg)](http://ci.cafjs.com/cafjs/caf_deploy)
+
 This repository contains a CAF  lib to deploy applications in Mesos/Marathon.
 
 

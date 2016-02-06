@@ -34,6 +34,17 @@
             "forcePullImage":true
         }
     },
+   "healthChecks": [
+    {
+        "path": "/ping",
+        "portIndex": 0,
+        "protocol": "HTTP",
+        "gracePeriodSeconds": 300,
+        "intervalSeconds": 60,
+        "timeoutSeconds": 20,
+        "maxConsecutiveFailures": 3
+    }
+    ],
     "args": {{{args}}}{{^args}}[]{{/args}},
     "cpus": {{{cpus}}},
     "mem": {{{memory}}},

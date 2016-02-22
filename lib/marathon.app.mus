@@ -36,9 +36,8 @@
     },
    "healthChecks": [
     {
-        "path": "/ping",
-        "portIndex": 0,
-        "protocol": "HTTP",
+        "protocol": "COMMAND",
+        "command": { "value": "curl -f -X GET http://$HOST:$PORT0/ping | grep -q Hello" },
         "gracePeriodSeconds": 300,
         "intervalSeconds": 60,
         "timeoutSeconds": 20,

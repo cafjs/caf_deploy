@@ -30,6 +30,16 @@
             "forcePullImage":false
         }
     },
+   "healthChecks": [
+    {
+        "protocol": "COMMAND",
+        "command": { "value": "redis-cli -p $PORT0 -h $HOST info | egrep 'role:master|master_link_status:up'"},
+        "gracePeriodSeconds": 300,
+        "intervalSeconds": 20,
+        "timeoutSeconds": 10,
+        "maxConsecutiveFailures": 3
+    }
+    ],
     "args": ["redis-server", "--appendonly", "yes"],
     "cpus": {{{cpus}}},
     "mem": {{{memory}}},

@@ -39,8 +39,8 @@
         "protocol": "COMMAND",
         "command": { "value": "curl -f -X GET http://$HOST:$PORT0/ping | grep -q Hello" },
         "gracePeriodSeconds": 300,
-        "intervalSeconds": 60,
-        "timeoutSeconds": 20,
+        "intervalSeconds": 20,
+        "timeoutSeconds": 10,
         "maxConsecutiveFailures": 3
     }
     ],

@@ -70,7 +70,9 @@ module.exports = {
                     }, 25000);
                 },
                 function(cb) {
-                     s1.flexApp('myfoo1', 3, cb);
+                    setTimeout(function() {
+                        s1.flexApp('myfoo1', 3, cb);
+                    }, 60000);
                 },
                 function(cb) {
                     setTimeout(function() {
@@ -103,4 +105,3 @@ module.exports = {
             });
     }
 };
-

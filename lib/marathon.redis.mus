@@ -5,7 +5,7 @@
         "volumes":[
             {
                 "containerPath":"/data",
-                "hostPath":"/mnt/{{{id}}}",
+                "hostPath":"/nfs/redis/{{{id}}}-{{{timestamp}}}",
                 "mode":"RW"
             }
         ],
@@ -43,6 +43,5 @@
     "args": ["redis-server", "--appendonly", "yes"],
     "cpus": {{{cpus}}},
     "mem": {{{memory}}},
-    "instances": 1,
-    "constraints": [["hostname", "CLUSTER", "{{{hostname}}}"]]
+    "instances": 1
 }

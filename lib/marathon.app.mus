@@ -2,6 +2,13 @@
     "id": "{{{id}}}",
     "container": {
         "type":"DOCKER",
+        "volumes":[
+            {
+                "containerPath":"/keys",
+                "hostPath":"/nfs/pubkeys",
+                "mode":"RO"
+            }
+        ],
         "docker": {
             "image":"{{{image}}}",
             "network":"BRIDGE",
@@ -14,6 +21,10 @@
             ],
             "privileged":false,
             "parameters":[
+                {
+                    "key":"env",
+                    "value":"KEYS_DIR=/keys"
+                },
                 {
                     "key":"env",
                     "value":"REDIS_PORT_6379_TCP_PORT={{{redisPort}}}"

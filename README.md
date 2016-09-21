@@ -2,7 +2,7 @@
 
 Co-design permanent, active, stateful, reliable cloud proxies with your web app.
 
-See http://www.cafjs.com 
+See http://www.cafjs.com
 
 ## CAF Extra Deploy
 
@@ -17,7 +17,7 @@ This repository contains a CAF  lib to deploy applications in Mesos/Marathon.
     lib/proxy_deploy.js
 
 See the `caf_turtles` application for an example.
- 
+
 ## Configuration Example
 
 ### framework.json
@@ -38,7 +38,6 @@ See the `caf_turtles` application for an example.
                 "prefixID": "process.env.REDIS_PREFIX_ID||redis",
                 "rangePortStart" : "process.env.REDIS_RANGE_PORT_START||6380",
                 "rangePortEnd" : "process.env.REDIS_RANGE_PORT_END||6480",
-                "hostname" : "process.env.REDIS_HOSTNAME||redisHost1",
                 "image" : "process.env.REDIS_IMAGE||redis:2.8",
                 "cpus" : "process.env.REDIS_CPUS||0.1",
                 "memory" : "process.env.REDIS_MEMORY||64.0"
@@ -53,10 +52,10 @@ See the `caf_turtles` application for an example.
             }
         }
     }
-        
-        
-The properties define the Marathon/Mesos target URL, username, and password. 
-        
+
+
+The properties define the Marathon/Mesos target URL, username, and password.
+
 
 ### ca.json
 
@@ -79,4 +78,3 @@ The properties define the Marathon/Mesos target URL, username, and password.
                 }
             ]
         }
- 

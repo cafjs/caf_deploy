@@ -14,11 +14,13 @@ This repository contains a CAF  lib to deploy applications in Mesos/Marathon.
 
 ## API
 
-    lib/proxy_deploy.js
+See {@link module:caf_deploy/proxy_deploy}
 
 See the `caf_turtles` application for an example.
 
 ## Configuration Example
+
+See {@link module:caf_deploy/plug_deploy}
 
 ### framework.json
 
@@ -27,6 +29,7 @@ See the `caf_turtles` application for an example.
         "name": "deploy",
         "description": "Shared plug to deploy apps in Mesos/Marathon\n Properties: \n",
         "env": {
+            "listAllRedisPorts" : "process.env.LIST_ALL_REDIS_PORTS||false",
             "refreshInterval" : "process.env.REFRESH_INTERVAL||1000",
             "protocol" : "process.env.MARATHON_PROTOCOL||http",
             "hostname" : "process.env.HOST||localhost",
@@ -52,10 +55,6 @@ See the `caf_turtles` application for an example.
             }
         }
     }
-
-
-The properties define the Marathon/Mesos target URL, username, and password.
-
 
 ### ca.json
 

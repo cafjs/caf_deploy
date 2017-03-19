@@ -20,6 +20,8 @@ exports.methods = {
         this.$.log.debug("++++++++++++++++Calling init");
         this.state.pulses = 0;
         this.state.apps = {};
+        this.state.pending = {};
+        this.$.deploy.setHandleReplyMethod('handleReply');
         cb(null);
     },
     "__ca_resume__" : function(cp, cb) {
@@ -38,6 +40,13 @@ exports.methods = {
                 });
         var all = this.$.deploy.statApps(ids);
         this.$.log.debug('Apps:' + JSON.stringify(all));
+        this.$.log.debug('Pending:' + JSON.stringify(this.state.pending));
+        cb(null);
+    },
+    handleReply: function(reqId, err, data, cb) {
+        this.$.log.debug('Handle id:' + reqId + ' err:' + JSON.stringify(err) +
+                         'data:' + JSON.stringify(data));
+        delete this.state.pending[reqId];
         cb(null);
     },
     statApps: function(cb) {
@@ -55,12 +64,14 @@ exports.methods = {
     addApp: function(appLocalName, image, options, cb) {
         var id = this.$.deploy.createApp(appLocalName, image, options);
         this.state.apps[appLocalName] = id;
+        this.state.pending[id] = (new Date()).getTime();
         cb(null, id);
     },
     deleteApp: function(appLocalName, cb) {
         var id =  this.state.apps[appLocalName];
         if (id) {
-            this.$.deploy.deleteApp(id);
+            var reqId = this.$.deploy.deleteApp(id);
+            this.state.pending[reqId] = (new Date()).getTime();
         }
         cb(null);
     },
@@ -68,7 +79,8 @@ exports.methods = {
     restartApp: function(appLocalName, cb) {
         var id =  this.state.apps[appLocalName];
         if (id) {
-            this.$.deploy.restartApp(id);
+            var reqId = this.$.deploy.restartApp(id);
+            this.state.pending[reqId] = (new Date()).getTime();
         }
         cb(null);
     },
@@ -76,7 +88,8 @@ exports.methods = {
     flexApp:  function(appLocalName, instances, cb) {
         var id =  this.state.apps[appLocalName];
         if (id) {
-            this.$.deploy.flexApp(id, instances);
+            var reqId = this.$.deploy.flexApp(id, instances);
+            this.state.pending[reqId] = (new Date()).getTime();
         }
         cb(null);
     }

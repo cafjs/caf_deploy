@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    events {
+      worker_connections  1024;  ## Only 512 proxied connections, need more...
+    }
+    http {
+          map $http_upgrade $connection_upgrade {
+            default upgrade;
+            '' close;
+          }
+          ssl_certificate     /etc/ssl/fullchain1.pem;
+          ssl_certificate_key /etc/ssl/privkey1.pem;
+          ssl_ciphers         EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH;
+          ssl_protocols       TLSv1.2;
+      server {
+          listen 443 ssl;
+          server_name ~^host(?<one>[^-]+)-(?<two>[^-]+)-(?<three>[^-]+)-(?<fourth>[^-]+)-(?<app>[^.]+)\.uhdia\.com$;
+          access_log /dev/stdout;
+          location / {
+              resolver kube-dns.kube-system.svc.cluster.local;
+              proxy_pass http://${one}-${two}-${three}-${fourth}.apps.pod.cluster.local:3000;
+
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header Host $host;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+              proxy_read_timeout 86400s;
+              proxy_send_timeout 86400s;
+
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection $connection_upgrade;
+          }
+      }
+      server {
+          listen 443 ssl;
+          server_name ~^(?<service>[^.]+)\.uhdia\.com$;
+          access_log /dev/stdout;
+          location / {
+              resolver kube-dns.kube-system.svc.cluster.local;
+              proxy_pass http://${service}.apps.svc.cluster.local:3000;
+
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header Host $host;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+              proxy_read_timeout 86400s;
+              proxy_send_timeout 86400s;
+
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection $connection_upgrade;
+          }
+      }
+      server {
+          listen 443 ssl default_server;
+          return 444;
+      }
+     }

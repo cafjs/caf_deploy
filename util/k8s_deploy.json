@@ -1,0 +1,31 @@
+{
+    "module": "../index.js#plug",
+    "name": "deploy",
+    "description": "Shared plug to deploy apps in Kubernetes\n Properties: \n",
+    "env": {
+        "targetPaaS": "process.env.TARGET_PAAS||kubernetes",
+        "refreshInterval" : "process.env.REFRESH_INTERVAL||1000",
+        "useK8SConfig" : "process.env.USE_K8S_CONFIG||true",
+        "redis" : {
+            "k8SNamespace" : "process.env.REDIS_K8S_NAMESPACE||redis",
+            "templateFile" : "process.env.REDIS_TEMPLATE_FILE||kubernetes.redis.mus",
+            "image" : "process.env.REDIS_IMAGE||redis:3",
+            "cpus" : "process.env.REDIS_CPUS||0.02",
+            "memory" : "process.env.REDIS_MEMORY||64.0",
+            "memoryLimit" : "process.env.REDIS_MEMORY_LIMIT||128.0"
+        },
+        "app" : {
+            "k8SNamespace" : "process.env.APP_K8S_NAMESPACE||apps",
+            "templateFile" : "process.env.APP_TEMPLATE_FILE||kubernetes.app.mus",
+            "cpus" : "process.env.APP_CPUS||0.02",
+            "args": "process.env.APP_ARGS||[]",
+            "memory" : "process.env.APP_MEMORY||96.0",
+            "memoryLimit" : "process.env.APP_MEMORY_LIMIT||128.0",
+            "instances": "process.env.APP_INSTANCES||1",
+            "isDeployer": "process.env.APP_IS_DEPLOYER||false",
+            "isAccounts": "process.env.APP_IS_ACCOUNTS||false",
+            "appSuffix" : "process.env.APP_SUFFIX||uhdia.com",
+            "services" :["redis"]
+        }
+    }
+}

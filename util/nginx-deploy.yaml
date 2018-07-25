@@ -10,6 +10,10 @@ spec:
     protocol: TCP
     port: 443
     targetPort: 443
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
   type: LoadBalancer
   loadBalancerIP: 35.227.145.176
 
@@ -46,6 +50,8 @@ spec:
         ports:
         - containerPort: 443
           name: https-port
+        - containerPort: 80
+          name: http-port
       volumes:
       - name: ssl
         secret:

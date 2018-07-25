@@ -17,6 +17,11 @@ data:
           ssl_ciphers         EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH;
           ssl_protocols       TLSv1.2;
       server {
+           listen 80 default_server;
+           server_name _;
+           return 301 https://$host$request_uri;
+      }
+      server {
           listen 443 ssl;
           server_name ~^host(?<one>[^-]+)-(?<two>[^-]+)-(?<three>[^-]+)-(?<fourth>[^-]+)-(?<app>[^.]+)\.uhdia\.com$;
           access_log /dev/stdout;

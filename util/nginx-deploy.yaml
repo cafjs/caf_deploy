@@ -55,7 +55,7 @@ spec:
       volumes:
       - name: ssl
         secret:
-          secretName: ssl-keys
+          secretName: ssl-keys-cafjs
       - name: conf
         configMap:
           name: nginx-config

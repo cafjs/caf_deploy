@@ -23,7 +23,7 @@ data:
       }
       server {
           listen 443 ssl;
-          server_name ~^host(?<one>[^-]+)-(?<two>[^-]+)-(?<three>[^-]+)-(?<fourth>[^-]+)-(?<app>[^.]+)\.uhdia\.com$;
+          server_name ~^host(?<one>[^-]+)-(?<two>[^-]+)-(?<three>[^-]+)-(?<fourth>[^-]+)-(?<app>[^.]+)\.cafjs\.com$;
           access_log /dev/stdout;
           location / {
               resolver kube-dns.kube-system.svc.cluster.local;
@@ -43,7 +43,7 @@ data:
       }
       server {
           listen 443 ssl;
-          server_name ~^(?<service>[^.]+)\.uhdia\.com$;
+          server_name ~^(?<service>[^.]+)\.cafjs\.com$;
           access_log /dev/stdout;
           location / {
               resolver kube-dns.kube-system.svc.cluster.local;

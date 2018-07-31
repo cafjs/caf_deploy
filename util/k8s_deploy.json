@@ -24,7 +24,7 @@
             "instances": "process.env.APP_INSTANCES||1",
             "isDeployer": "process.env.APP_IS_DEPLOYER||false",
             "isAccounts": "process.env.APP_IS_ACCOUNTS||false",
-            "appSuffix" : "process.env.APP_SUFFIX||uhdia.com",
+            "appSuffix" : "process.env.APP_SUFFIX||cafjs.com",
             "services" :["redis"]
         }
     }

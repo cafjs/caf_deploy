@@ -11,6 +11,8 @@ Internal notes to deploy  on K8s (not generally applicable...)
 
 - Ditto for priv/pub keys for token signing.
 
+- Ditto for priv/pub keys for reCaptcha.
+
 - Deploy nginx:
 
         kubectl apply -f nginx.conf.yaml

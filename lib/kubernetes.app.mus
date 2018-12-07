@@ -56,6 +56,12 @@ spec:
           value: rsa_pub.pem
         - name:  PRIVATE_KEY_FILE
           value: rsa_priv.pem
+        - name:  RECAPTCHA_PUBLIC_KEY_FILE
+          value: reCaptcha_pub.txt
+        - name:  RECAPTCHA_PRIVATE_KEY_FILE
+          value: reCaptcha_priv.txt
+        - name:  RECAPTCHA_KEYS_DIR
+          value: /recaptcha
       {{/isAccounts}}
         - name: APP_PUBLISHER
           value: {{{appPublisher}}}
@@ -77,6 +83,11 @@ spec:
         - name: {{#isAccounts}}privkey{{/isAccounts}}{{^isAccounts}}pubkey{{/isAccounts}}
           mountPath: /keys
           readOnly: true
+      {{#isAccounts}}
+        - name: recaptcha
+          mountPath: /recaptcha
+          readOnly: true
+      {{/isAccounts}}
         args: {{{args}}}{{^args}}[]{{/args}}
         resources:
           requests:
@@ -109,6 +120,9 @@ spec:
       - name : privkey
         secret:
           secretName: private-key
+      - name : recaptcha
+        secret:
+          secretName: recaptcha-keys
       {{/isAccounts}}
       {{^isAccounts}}
       - name : pubkey

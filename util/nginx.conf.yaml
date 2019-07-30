@@ -4,8 +4,9 @@ metadata:
   name: nginx-config
 data:
   nginx.conf: |
+    worker_rlimit_nofile 65535;
     events {
-      worker_connections  1024;  ## Only 512 proxied connections, need more...
+      worker_connections  65535;
     }
     http {
           map $http_upgrade $connection_upgrade {
@@ -20,6 +21,16 @@ data:
            listen 80 default_server;
            server_name _;
            return 301 https://$host$request_uri;
+      }
+      server {
+           listen 443 ssl;
+           server_name www.cafjs.com;
+           return 301 https://cafjs.github.io$request_uri;
+      }
+      server {
+           listen 443 ssl;
+           server_name cafjs.com;
+           return 301 https://cafjs.github.io$request_uri;
       }
       server {
           listen 443 ssl;

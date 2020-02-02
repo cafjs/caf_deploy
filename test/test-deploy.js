@@ -45,7 +45,7 @@ module.exports = {
 
     oneDeploy: function(test) {
         var self = this;
-        test.expect(5);
+        test.expect(4);
 
         var s1;
         var from1 = FROM_1;
@@ -56,7 +56,7 @@ module.exports = {
                         from : from1
                     });
                     s1.onopen = function() {
-                        s1.addApp('myfoo1', 'registry.cafjs.com:32000/root-helloworld', {}, cb);
+                        s1.addApp('myfoo1', 'gcr.io/cafjs-k8/root-helloworld', {}, cb);
                     };
                 },
                 function(cb) {
@@ -67,26 +67,18 @@ module.exports = {
                             console.log(data);
                             cb(null);
                         });
-                    }, 25000);
-                },
-                function(cb) {
-                    setTimeout(function() {
-                        s1.flexApp('myfoo1', 3, cb);
                     }, 60000);
                 },
                 function(cb) {
                     setTimeout(function() {
-                        s1.restartApp('myfoo1', cb);
-                    }, 25000);
+                        s1.flexApp('myfoo1', 3, cb);
+                    }, 30000);
                 },
                 function(cb) {
-                     s1.getAllRedisPorts(function(err, data) {
-                         console.log(data);
-                         test.ok(Object.keys(data).length > 0);
-                         cb(err, data);
-                     });
+                    setTimeout(function() {
+                        s1.restartApp('myfoo1', cb);
+                    }, 15000);
                 },
-
                 function(cb) {
                     setTimeout(function() {
                         s1.deleteApp('myfoo1', cb);

@@ -1,10 +1,11 @@
 {
     "name": "caf_deploy",
     "description": "Cloud Assistants lib for deploying apps or services in Mesos/Marathon or Kubernetes",
-    "version": "0.3.4",
+    "version": "0.4.0",
     "author": "Antonio Lain <antlai@cafjs.com>",
+    "license": "Apache-2.0",
     "dependencies": {
-        "caf_core": "^0.3.0",
+        "caf_core": "^0.4.0",
         "mustache": "^3.1.0",
         "kubernetes-client": "^8.3.6",
         "js-yaml": "^3.12.0"

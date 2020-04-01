@@ -32,4 +32,8 @@ Internal notes to deploy  on K8s (not generally applicable...)
 
     ./k8s_deploy.js create root-launcher gcr.io/cafjs-k8/root-launcher
 
+-Deploy people:
+
+    ./k8s_deploy.js create root-people gcr.io/cafjs-k8/root-people
+
 -Login as root (create account if needed), create an instance of turtles, then deploy all the other apps with it.

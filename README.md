@@ -1,15 +1,15 @@
-# CAF (Cloud Assistant Framework)
+# Caf.js
 
-Co-design permanent, active, stateful, reliable cloud proxies with your web app.
+Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.
 
-See http://www.cafjs.com
+See https://www.cafjs.com
 
-## CAF Extra Deploy
+## Library for Deploying Apps with Kubernetes
 
 
 <!-- [![Build Status](http://ci.cafjs.com/api/badges/cafjs/caf_deploy/status.svg)](http://ci.cafjs.com/cafjs/caf_deploy) -->
 
-This repository contains a CAF  lib to deploy applications using Kubernetes.
+This repository contains a `Caf.js` lib to deploy applications using Kubernetes.
 
 
 ## API

@@ -2,10 +2,21 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: apps
-
+  labels:
+    tier: app
 ---
 
 apiVersion: v1
 kind: Namespace
 metadata:
   name: redis
+  labels:
+    tier: redis
+---
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: default
+  labels:
+    tier: frontend

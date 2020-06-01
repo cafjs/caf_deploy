@@ -34,6 +34,7 @@ spec:
       # generated from  the deployment name
       labels:
         app: nginx
+        tier: frontend
       annotations:
         touch: "112"
     spec:

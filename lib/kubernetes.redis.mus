@@ -80,3 +80,30 @@ spec:
       - name : cp-data
         persistentVolumeClaim:
           claimName: nfs-claim
+---
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: redis-{{{id}}}
+  namespace: {{{k8SNamespace}}}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{{id}}}
+      tier: redis
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          tier: app
+      podSelector:
+        matchLabels:
+          app: {{{id}}}
+          tier: app
+    - podSelector:
+        matchLabels:
+          app: {{{id}}}
+          tier: redis

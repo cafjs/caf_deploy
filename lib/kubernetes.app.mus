@@ -38,6 +38,9 @@ spec:
       {{#isDeployer}}
       serviceAccountName: deployer-account
       {{/isDeployer}}
+      {{#isUntrusted}}
+      runtimeClassName: gvisor
+      {{/isUntrusted}}
       initContainers:
       - name: init-redis
         image: redis:3
@@ -93,8 +96,11 @@ spec:
           requests:
             cpu:  {{{cpus}}}
             memory: {{{memory}}}
+        {{#isUntrusted}}
           limits:
             memory:  {{{memoryLimit}}}
+            cpu: {{{cpusLimit}}}
+        {{/isUntrusted}}
         ports:
         - containerPort: 3000
         livenessProbe:

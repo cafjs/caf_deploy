@@ -52,8 +52,11 @@ spec:
           requests:
             cpu: {{{cpus}}}
             memory: {{{memory}}}
+        {{#isUntrusted}}
           limits:
             memory: {{{memoryLimit}}}
+            cpu: {{{cpusLimit}}}
+        {{/isUntrusted}}
         ports:
         - containerPort: 6379
         livenessProbe:

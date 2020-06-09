@@ -38,20 +38,24 @@ Default for Kubernetes deployment:
                 "k8SNamespace" : "process.env.REDIS_K8S_NAMESPACE||default",
                 "templateFile" : "process.env.REDIS_TEMPLATE_FILE||kubernetes.redis.mus",
                 "image" : "process.env.REDIS_IMAGE||redis:3",
+                "isUntrusted": "process.env.IS_UNTRUSTED||false",
                 "cpus" : "process.env.REDIS_CPUS||0.02",
                 "memory" : "process.env.REDIS_MEMORY||64.0",
+                "cpusLimit" : "process.env.REDIS_CPUS_LIMIT||0.1",
                 "memoryLimit" : "process.env.REDIS_MEMORY_LIMIT||128.0"
             },
             "app" : {
                 "k8SNamespace" : "process.env.APP_K8S_NAMESPACE||default",
                 "templateFile" : "process.env.APP_TEMPLATE_FILE||kubernetes.app.mus",
                 "cpus" : "process.env.APP_CPUS||0.02",
+                "cpusLimit" : "process.env.APP_CPUS_LIMIT||0.1",
                 "args": "process.env.APP_ARGS||[]",
                 "memory" : "process.env.APP_MEMORY||96.0",
                 "memoryLimit" : "process.env.APP_MEMORY_LIMIT||128.0",
                 "instances": "process.env.APP_INSTANCES||1",
                 "isDeployer": "process.env.APP_IS_DEPLOYER||false",
                 "isAccounts": "process.env.APP_IS_ACCOUNTS||false",
+                "isUntrusted": "process.env.IS_UNTRUSTED||false",
                 "appSuffix" : "$._.env.appSuffix",
                 "services" :["redis"]
             }

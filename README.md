@@ -52,9 +52,12 @@ Default for Kubernetes deployment:
                 "args": "process.env.APP_ARGS||[]",
                 "memory" : "process.env.APP_MEMORY||96.0",
                 "memoryLimit" : "process.env.APP_MEMORY_LIMIT||128.0",
+                "storage" : "process.env.APP_STORAGE||16",
+                "storageLimit" : "process.env.APP_STORAGE_LIMIT||32",
                 "instances": "process.env.APP_INSTANCES||1",
                 "isDeployer": "process.env.APP_IS_DEPLOYER||false",
                 "isAccounts": "process.env.APP_IS_ACCOUNTS||false",
+                "isPeople": "process.env.APP_IS_PEOPLE||false",
                 "isUntrusted": "process.env.IS_UNTRUSTED||false",
                 "appSuffix" : "$._.env.appSuffix",
                 "services" :["redis"]

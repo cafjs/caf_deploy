@@ -65,7 +65,19 @@ spec:
           value: reCaptcha_priv.txt
         - name:  RECAPTCHA_KEYS_DIR
           value: /recaptcha
+        - name:  SMTP_DIR
+          value: /smtp
+        - name:  SMTP_FILE
+          value: smtp.json
+        - name: ENABLE_SMTP
+          value: 'true'
       {{/isAccounts}}
+      {{#isPeople}}
+        - name: APP_INFO_DIR
+          value: /appInfo
+        - name: APP_INFO_FILE
+          value: appInfo.json
+      {{/isPeople}}
         - name: APP_PUBLISHER
           value: {{{appPublisher}}}
         - name: APP_LOCAL_NAME
@@ -90,16 +102,26 @@ spec:
         - name: recaptcha
           mountPath: /recaptcha
           readOnly: true
+        - name: smtp
+          mountPath: /smtp
+          readOnly: true
       {{/isAccounts}}
+      {{#isPeople}}
+        - name: app-info
+          mountPath: /appInfo
+          readOnly: true
+      {{/isPeople}}
         args: {{{args}}}{{^args}}[]{{/args}}
         resources:
           requests:
             cpu:  {{{cpus}}}
             memory: {{{memory}}}
+            ephemeral-storage: {{{storage}}}
         {{#isUntrusted}}
           limits:
             memory:  {{{memoryLimit}}}
             cpu: {{{cpusLimit}}}
+            ephemeral-storage: {{{storageLimit}}}
         {{/isUntrusted}}
         ports:
         - containerPort: 3000
@@ -122,6 +144,11 @@ spec:
             path: /ping
             port: 3000
       volumes:
+      {{#isPeople}}
+      - name : app-info
+        secret:
+          secretName: app-info-keys
+      {{/isPeople}}
       {{#isAccounts}}
       - name : privkey
         secret:
@@ -129,6 +156,9 @@ spec:
       - name : recaptcha
         secret:
           secretName: recaptcha-keys
+      - name : smtp
+        secret:
+          secretName: smtp-keys
       {{/isAccounts}}
       {{^isAccounts}}
       - name : pubkey

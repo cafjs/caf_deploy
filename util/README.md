@@ -13,6 +13,10 @@ Internal notes to deploy  on K8s (not generally applicable...)
 
 - Ditto for priv/pub keys for reCaptcha.
 
+- Ditto for Oauth keys for SMTP.
+
+- Ditto for appInfo keys for reading resource consumption data.
+
 - Deploy nginx:
 
         kubectl apply -f nginx.conf.yaml
@@ -34,6 +38,6 @@ Internal notes to deploy  on K8s (not generally applicable...)
 
 -Deploy people:
 
-    ./k8s_deploy.js create root-people gcr.io/cafjs-k8/root-people
+    export APP_IS_PEOPLE=true;./k8s_deploy.js create root-people gcr.io/cafjs-k8/root-people; unset APP_IS_PEOPLE
 
 -Login as root (create account if needed), create an instance of turtles, then deploy all the other apps with it.

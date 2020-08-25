@@ -1,0 +1,34 @@
+cpuMemActual
+------------
+
+SELECT
+  TIMESTAMP_TRUNC(start_time, DAY) as timestamp,
+  resource_name as resource,
+  labels.value as app,
+  namespace as type,
+  #mem and cpu needs to divide by 86400
+  sum(usage.amount) as amount
+FROM `cafjs-k8.cafjsCostUS.gke_cluster_resource_consumption`
+left join unnest(labels) as labels
+   on labels.key = "app"
+#where start_time > timestamp("2020-07-31")
+GROUP BY timestamp, app, namespace, resource
+ORDER by timestamp, app, namespace, resource
+
+
+cpuMemEgressRequest
+-------------------
+
+SELECT
+  TIMESTAMP_TRUNC(start_time, DAY) as timestamp,
+  resource_name as resource,
+  labels.value as app,
+  namespace as type,
+  #mem and cpu needs to divide by 86400
+  sum(usage.amount) as amount
+FROM `cafjs-k8.cafjsCostUS.gke_cluster_resource_usage`
+left join unnest(labels) as labels
+   on labels.key = "app"
+#where start_time > timestamp("2020-07-31")
+GROUP BY timestamp, app, namespace, resource
+ORDER by timestamp, app, namespace, resource

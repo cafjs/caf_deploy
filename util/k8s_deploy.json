@@ -9,7 +9,7 @@
         "redis" : {
             "k8SNamespace" : "process.env.REDIS_K8S_NAMESPACE||redis",
             "templateFile" : "process.env.REDIS_TEMPLATE_FILE||kubernetes.redis.mus",
-            "image" : "process.env.REDIS_IMAGE||redis:3",
+            "image" : "process.env.REDIS_IMAGE||redis:6",
             "cpus" : "process.env.REDIS_CPUS||0.02",
             "cpusLimit" : "process.env.REDIS_CPUS_LIMIT||0.1",
             "memory" : "process.env.REDIS_MEMORY||64.0",

@@ -37,7 +37,7 @@ Default for Kubernetes deployment:
             "redis" : {
                 "k8SNamespace" : "process.env.REDIS_K8S_NAMESPACE||default",
                 "templateFile" : "process.env.REDIS_TEMPLATE_FILE||kubernetes.redis.mus",
-                "image" : "process.env.REDIS_IMAGE||redis:3",
+                "image" : "process.env.REDIS_IMAGE||redis:6",
                 "isUntrusted": "process.env.IS_UNTRUSTED||false",
                 "cpus" : "process.env.REDIS_CPUS||0.02",
                 "memory" : "process.env.REDIS_MEMORY||64.0",

@@ -43,7 +43,7 @@ spec:
       {{/isUntrusted}}
       initContainers:
       - name: init-redis
-        image: redis:3
+        image: redis:6
         command: ['sh', '-c', 'until  timeout 2 redis-cli -h redis-{{{id}}}.{{{redisNamespace}}}.svc.cluster.local ping; do echo waiting for redis; sleep 2; done;']
       containers:
       - name: master

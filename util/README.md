@@ -11,11 +11,13 @@ Internal notes to deploy  on K8s (not generally applicable...)
 
 - Ditto for priv/pub keys for token signing.
 
-- Ditto for priv/pub keys for reCaptcha.
+- Ditto for priv/pub keys for reCaptcha (use apps namespace).
 
-- Ditto for Oauth keys for SMTP.
+- Ditto for Oauth keys for SMTP (use apps namespace).
 
-- Ditto for appInfo keys for reading resource consumption data.
+- Ditto for appInfo keys for reading resource consumption data (use apps namespace).
+
+- Ditto for PayPal secrets for purchasing units (use apps namespace).
 
 - Deploy nginx:
 

@@ -77,6 +77,10 @@ spec:
           value: /appInfo
         - name: APP_INFO_FILE
           value: appInfo.json
+        - name: PAYPAL_DIR
+          value: /paypal
+        - name: PAYPAL_FILE
+          value: paypal.json
       {{/isPeople}}
         - name: APP_PUBLISHER
           value: {{{appPublisher}}}
@@ -109,6 +113,9 @@ spec:
       {{#isPeople}}
         - name: app-info
           mountPath: /appInfo
+          readOnly: true
+        - name: paypal
+          mountPath: /paypal
           readOnly: true
       {{/isPeople}}
         args: {{{args}}}{{^args}}[]{{/args}}
@@ -148,6 +155,9 @@ spec:
       - name : app-info
         secret:
           secretName: app-info-keys
+      - name : paypal
+        secret:
+          secretName: paypal-keys
       {{/isPeople}}
       {{#isAccounts}}
       - name : privkey

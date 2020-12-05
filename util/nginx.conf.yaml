@@ -33,6 +33,17 @@ data:
            return 301 https://cafjs.github.io$request_uri;
       }
       server {
+           listen 443 ssl;
+           server_name ~^(?<user>[^-]+)-cdn\.cafjs\.com$;
+           location ~ ^\/(?<app>[^\/]+)\/(?<rest>.+)$ {
+              resolver kube-dns.kube-system.svc.cluster.local;
+              proxy_pass http://${user}-${app}.apps.svc.cluster.local:3000/${rest};
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header Host $host;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           }
+      }
+      server {
           listen 443 ssl;
           server_name ~^host(?<one>[^-]+)-(?<two>[^-]+)-(?<three>[^-]+)-(?<fourth>[^-]+)-(?<app>[^.]+)\.cafjs\.com$;
           access_log /dev/stdout;

@@ -81,6 +81,8 @@ spec:
             command:
             - redis-cli
             - ping
+      nodeSelector:
+        {{{poolKey}}}: {{{poolValue}}}
       volumes:
       - name : cp-data
         persistentVolumeClaim:

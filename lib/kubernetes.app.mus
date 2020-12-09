@@ -150,6 +150,8 @@ spec:
           httpGet:
             path: /ping
             port: 3000
+      nodeSelector:
+        {{{poolKey}}}: {{{poolValue}}}
       volumes:
       {{#isPeople}}
       - name : app-info

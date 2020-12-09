@@ -53,6 +53,8 @@ spec:
           name: https-port
         - containerPort: 80
           name: http-port
+      nodeSelector:
+        cloud.google.com/gke-nodepool: default-pool
       volumes:
       - name: ssl
         secret:

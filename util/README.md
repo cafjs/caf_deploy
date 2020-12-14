@@ -24,7 +24,7 @@ Internal notes to deploy  on K8s (not generally applicable...)
         kubectl apply -f nginx.conf.yaml
         kubectl apply -f nginx-deploy.yaml
 
-- If missing, ditto for service-account.yaml, Roles.yaml, namespaces.yaml, and nfs storage (changes based on local set up...)
+- If missing, ditto for service-account.yaml, Roles.yaml, namespaces.yaml, redis-volume.yaml, and nfs storage (changes based on local set up...)
 
 - Deploy turtles:
 

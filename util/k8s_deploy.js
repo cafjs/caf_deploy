@@ -20,7 +20,7 @@ const usage = function() {
 
 const that = {
 
-    create: function(deployer, args) {
+    async create(deployer, args) {
         if (args.length !== 2) {
             console.log('Usage: k8s_deploy.js create <id> <image>');
             process.exit(1);
@@ -28,12 +28,14 @@ const that = {
         const id = args.shift();
         const image = args.shift();
         const split = json_rpc.splitName(id);
-        deployer.__ca_createApp__({
-            id: id,
-            image: image,
-            appPublisher: split[0],
-            appLocalName: split[1]
-        }, function(err) {
+        try {
+            await deployer.__ca_createApp__({
+                id: id,
+                image: image,
+                appPublisher: split[0],
+                appLocalName: split[1]
+            });
+        } catch (err) {
             if (err) {
                 console.log(myUtils.errToPrettyStr(err));
                 process.exit(1);
@@ -41,7 +43,7 @@ const that = {
                 console.log('OK');
                 deployer.__ca_shutdown__(null, function() {});
             }
-        });
+        };
     },
 
     flex: function(deployer, args) {
@@ -116,7 +118,7 @@ const that = {
     }
 };
 
-load(null, null, 'k8s_deploy.json', null, function(err, $) {
+load(null, null, 'k8s_deploy.json', null, async function(err, $) {
     if (err) {
         console.log(myUtils.errToPrettyStr(err));
         process.exit(1);
@@ -125,7 +127,7 @@ load(null, null, 'k8s_deploy.json', null, function(err, $) {
         const command = args.shift();
         if (command && that[command]) {
             try {
-                that[command]($.deploy, args);
+                await that[command]($.deploy, args);
             } catch (error) {
                 console.log(error.toString());
             }

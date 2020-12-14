@@ -1,7 +1,7 @@
 {
     "name": "caf_deploy",
     "description": "Cloud Assistants lib for deploying apps or services in Mesos/Marathon or Kubernetes",
-    "version": "0.4.4",
+    "version": "0.4.5",
     "author": "Antonio Lain <antlai@cafjs.com>",
     "license": "Apache-2.0",
     "dependencies": {
@@ -13,6 +13,8 @@
     "devDependencies": {
         "eslint": "^6.8.0",
         "nodeunit" : ">=0.9",
+        "typescript": "3.7.3",
+        "@types/node": "12.12.31",
         "jsdoc": "^3.4.2"
     },
     "main": "index",
@@ -25,7 +27,8 @@
         "test": "node ./node_modules/.bin/nodeunit",
         "eslint" : "./node_modules/.bin/eslint -c .eslintrc.js .",
         "eslintfix" : "./node_modules/.bin/eslint -c .eslintrc.js --fix .",
-        "docs" : "rm -fr docs; mkdir -p docs; ./node_modules/.bin/jsdoc --pedantic -c ./conf.json -d docs lib/*.js --readme ./README.md --package ./package.json"
+        "docs" : "rm -fr docs; mkdir -p docs; ./node_modules/.bin/jsdoc --pedantic -c ./conf.json -d docs lib/*.js --readme ./README.md --package ./package.json",
+        "checktype" : "./node_modules/.bin/tsc"
     },
   "engines": { "node": ">= 0.10.29 " }
 }

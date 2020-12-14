@@ -40,15 +40,35 @@ spec:
       securityContext:
         runAsUser: 1003
         supplementalGroups: [1004]
+      {{#isDedicatedVolume}}
+      initContainers:
+      - name: init-volume
+        image: redis:6
+        command: ['sh', '-c', 'cp -n /dataold/appendonly.aof /data/appendonly.aof || true']
+        volumeMounts:
+        - mountPath: /dataold
+          name: cp-data
+          readOnly: true
+          subPath: redis-{{{id}}}-{{{timestamp}}}
+        - mountPath: /data
+          name: cpdedicated-data
+          readOnly: false
+      {{/isDedicatedVolume}}
       containers:
       - name: master
         image: {{{image}}}
         imagePullPolicy: Always
         volumeMounts:
         - mountPath: /data
+        {{#isDedicatedVolume}}
+          name: cpdedicated-data
+          readOnly: false
+        {{/isDedicatedVolume}}
+        {{^isDedicatedVolume}}
           name: cp-data
           readOnly: false
           subPath: redis-{{{id}}}-{{{timestamp}}}
+        {{/isDedicatedVolume}}
         args: ["--appendonly", "yes"]
         resources:
           requests:
@@ -87,6 +107,11 @@ spec:
       - name : cp-data
         persistentVolumeClaim:
           claimName: nfs-claim
+      {{#isDedicatedVolume}}
+      - name: cpdedicated-data
+        persistentVolumeClaim:
+          claimName: vol-redis-{{{id}}}-{{{timestamp}}}
+      {{/isDedicatedVolume}}
 ---
 
 apiVersion: networking.k8s.io/v1
@@ -114,3 +139,19 @@ spec:
         matchLabels:
           app: {{{id}}}
           tier: redis
+{{#isDedicatedVolume}}
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vol-redis-{{{id}}}-{{{timestamp}}}
+  namespace: {{{k8SNamespace}}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: redis-volume
+{{/isDedicatedVolume}}

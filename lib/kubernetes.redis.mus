@@ -152,6 +152,6 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
+      storage: {{{dedicatedVolumeSize}}}
   storageClassName: redis-volume
 {{/isDedicatedVolume}}

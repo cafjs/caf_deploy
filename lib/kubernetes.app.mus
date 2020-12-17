@@ -32,15 +32,19 @@ spec:
         app: {{{id}}}
         tier: app
       annotations:
+        props: {{{props}}}
         touch: {{{touch}}}
+        {{#isUntrusted}}
+        kubernetes.io/egress-bandwidth: {{{egressLimit}}}
+        {{/isUntrusted}}
     spec:
       automountServiceAccountToken: {{{isDeployer}}}
       {{#isDeployer}}
       serviceAccountName: deployer-account
       {{/isDeployer}}
-      {{#isUntrusted}}
+      {{#isGvisor}}
       runtimeClassName: gvisor
-      {{/isUntrusted}}
+      {{/isGvisor}}
       initContainers:
       - name: init-redis
         image: redis:6
@@ -50,6 +54,12 @@ spec:
         image: {{{image}}}
         imagePullPolicy: Always
         env:
+        {{#isCDN}}
+        - name: APP_CDN
+          value: {{{appCDN}}}
+        - name: APP_SUBDIR_CDN
+          value: {{{appSubdirCDN}}}
+        {{/isCDN}}
         - name:  KEYS_DIR
           value: /keys
         - name:  TRUSTED_PUB_KEY_FILE

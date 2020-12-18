@@ -35,7 +35,7 @@ spec:
         props: {{{props}}}
         touch: {{{touch}}}
         {{#isUntrusted}}
-        kubernetes.io/egress-bandwidth: {{{egressLimit}}}
+        kubernetes.io/egress-bandwidth: {{{egressLimit}}}M
         {{/isUntrusted}}
     spec:
       automountServiceAccountToken: {{{isDeployer}}}
@@ -54,6 +54,8 @@ spec:
         image: {{{image}}}
         imagePullPolicy: Always
         env:
+        - name: NODE_MEMORY
+          value: {{memory}}
         {{#isCDN}}
         - name: APP_CDN
           value: {{{appCDN}}}
@@ -131,14 +133,13 @@ spec:
         args: {{{args}}}{{^args}}[]{{/args}}
         resources:
           requests:
-            cpu:  {{{cpus}}}
-            memory: {{{memory}}}
-            ephemeral-storage: {{{storage}}}
+            cpu:  {{cpus}}m
+            memory: {{memory}}M
         {{#isUntrusted}}
           limits:
-            memory:  {{{memoryLimit}}}
-            cpu: {{{cpusLimit}}}
-            ephemeral-storage: {{{storageLimit}}}
+            memory:  {{memoryLimit}}M
+            cpu: {{cpusLimit}}m
+            ephemeral-storage: {{storageLimit}}M
         {{/isUntrusted}}
         ports:
         - containerPort: 3000

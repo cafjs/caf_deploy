@@ -72,12 +72,12 @@ spec:
         args: ["--appendonly", "yes"]
         resources:
           requests:
-            cpu: {{{cpus}}}
-            memory: {{{memory}}}
+            cpu: {{cpus}}m
+            memory: {{memory}}M
         {{#isUntrusted}}
           limits:
-            memory: {{{memoryLimit}}}
-            cpu: {{{cpusLimit}}}
+            memory: {{memoryLimit}}M
+            cpu: {{cpusLimit}}m
         {{/isUntrusted}}
         ports:
         - containerPort: 6379
@@ -110,7 +110,7 @@ spec:
       {{#isDedicatedVolume}}
       - name: cpdedicated-data
         persistentVolumeClaim:
-          claimName: vol-redis-{{{id}}}-{{{timestamp}}}
+          claimName: redis-{{{id}}}-{{{timestamp}}}
       {{/isDedicatedVolume}}
 ---
 
@@ -145,13 +145,13 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: vol-redis-{{{id}}}-{{{timestamp}}}
+  name: redis-{{{id}}}-{{{timestamp}}}
   namespace: {{{k8SNamespace}}}
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{{dedicatedVolumeSize}}}
+      storage: {{dedicatedVolumeSize}}Gi
   storageClassName: redis-volume
 {{/isDedicatedVolume}}

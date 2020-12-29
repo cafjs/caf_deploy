@@ -3,7 +3,7 @@
 const caf_core = require('caf_core');
 const caf_comp = caf_core.caf_components;
 const myUtils = caf_comp.myUtils;
-const json_rpc = caf_core.caf_transport.json_rpc;
+const assert = require('assert');
 
 const load = function($, spec, name, modules, cb) {
     modules = modules || [];
@@ -21,100 +21,77 @@ const usage = function() {
 const that = {
 
     async create(deployer, args) {
-        if (args.length !== 2) {
-            console.log('Usage: k8s_deploy.js create <id> <image>');
+        if (args.length !== 4) {
+            console.log('Usage: k8s_deploy.js create <id> <image>' +
+                        ' <isUntrusted> <plan>');
             process.exit(1);
         }
         const id = args.shift();
         const image = args.shift();
-        const split = json_rpc.splitName(id);
-        try {
-            await deployer.__ca_createApp__({
-                id: id,
-                image: image,
-                appPublisher: split[0],
-                appLocalName: split[1]
-            });
-        } catch (err) {
-            if (err) {
-                console.log(myUtils.errToPrettyStr(err));
-                process.exit(1);
-            } else {
-                console.log('OK');
-                deployer.__ca_shutdown__(null, function() {});
-            }
-        };
+        const isUntrusted = (args.shift() === 'true');
+        const plan = args.shift();
+
+        await deployer.__ca_createApp__({id, image, isUntrusted, plan});
+        console.log('OK');
+        deployer.__ca_shutdown__(null, function() {});
     },
 
-    flex: function(deployer, args) {
-        if (args.length !== 2) {
-            console.log('Usage: k8s_deploy.js flex <id> <#instances>');
+    async flex(deployer, args) {
+        if (args.length !== 3) {
+            console.log('Usage: k8s_deploy.js flex <id> <plan> <#CAs>');
             process.exit(1);
         }
         const id = args.shift();
-        const instances = parseInt(args.shift());
-        deployer.__ca_updateApp__({
-            id: id,
-            instances: instances
-        }, function(err) {
-            if (err) {
-                console.log(myUtils.errToPrettyStr(err));
-                process.exit(1);
-            } else {
-                console.log('OK');
-                deployer.__ca_shutdown__(null, function() {});
-            }
-        });
+        const plan = args.shift();
+        const numberOfCAs = parseInt(args.shift());
+        await deployer.__ca_statAll__();
+        const deployed = deployer.__ca_statApp__(id);
+        assert(deployed, 'Unknown app');
+        const currentProps = deployed.props;
+
+        await deployer.__ca_updateApp__({id, plan, numberOfCAs, currentProps});
+        console.log('OK');
+        deployer.__ca_shutdown__(null, function() {});
     },
 
-    stat: function(deployer, args) {
+    async stat(deployer, args) {
         if (args.length !== 0) {
             console.log('Usage: k8s_deploy.js stat');
             process.exit(1);
         }
-        deployer.__ca_statAll__(function(err, data) {
-            if (err) {
-                console.log(myUtils.errToPrettyStr(err));
-                process.exit(1);
-            } else {
-                console.log(JSON.stringify(data));
-                deployer.__ca_shutdown__(null, function() {});
-            }
-        });
+        const data = await deployer.__ca_statAll__();
+        console.log(JSON.stringify(data));
+        deployer.__ca_shutdown__(null, function() {});
     },
 
-    delete: function(deployer, args) {
+    async delete(deployer, args) {
         if (args.length !== 1) {
             console.log('Usage: k8s_deploy.js delete <id>');
             process.exit(1);
         }
         const id = args.shift();
-        deployer.__ca_deleteApp__({id: id}, function(err) {
-            if (err) {
-                console.log(myUtils.errToPrettyStr(err));
-                process.exit(1);
-            } else {
-                console.log('OK');
-                deployer.__ca_shutdown__(null, function() {});
-            }
-        });
+        await deployer.__ca_statAll__();
+        const deployed = deployer.__ca_statApp__(id);
+        if (!deployed || !deployed.props) {
+            console.log('Missing app, forcing a delete');
+            await deployer.__ca_deleteApp__({id});
+        } else {
+            const timestamp = deployed.props.redis.timestamp;
+            await deployer.__ca_deleteApp__({id, timestamp});
+        }
+        console.log('OK');
+        deployer.__ca_shutdown__(null, function() {});
     },
 
-    restart: function(deployer, args) {
+    async restart(deployer, args) {
         if (args.length !== 1) {
             console.log('Usage: k8s_deploy.js restart <id>');
             process.exit(1);
         }
         const id = args.shift();
-        deployer.__ca_restartApp__({id: id}, function(err) {
-            if (err) {
-                console.log(myUtils.errToPrettyStr(err));
-                process.exit(1);
-            } else {
-                console.log('OK');
-                deployer.__ca_shutdown__(null, function() {});
-            }
-        });
+        await deployer.__ca_restartApp__({id});
+        console.log('OK');
+        deployer.__ca_shutdown__(null, function() {});
     }
 };
 
@@ -129,7 +106,8 @@ load(null, null, 'k8s_deploy.json', null, async function(err, $) {
             try {
                 await that[command]($.deploy, args);
             } catch (error) {
-                console.log(error.toString());
+                console.log(myUtils.errToPrettyStr(error));
+                process.exit(1);
             }
         } else {
             usage();

@@ -45,17 +45,30 @@ spec:
       {{#isGvisor}}
       runtimeClassName: gvisor
       {{/isGvisor}}
+      {{#isUntrusted}}
+      securityContext:
+        runAsUser: 2001
+        runAsGroup: 2001
+      {{/isUntrusted}}
       initContainers:
       - name: init-redis
         image: redis:6
         command: ['sh', '-c', 'until  timeout 2 redis-cli -h redis-{{{id}}}.{{{redisNamespace}}}.svc.cluster.local ping; do echo waiting for redis; sleep 2; done;']
       containers:
       - name: master
+      {{#isUntrusted}}
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - NET_RAW
+      {{/isUntrusted}}
         image: {{{image}}}
         imagePullPolicy: Always
         env:
         - name: NODE_MEMORY
-          value: {{memory}}
+          value: "{{{memory}}}"
         {{#isCDN}}
         - name: APP_CDN
           value: {{{appCDN}}}
@@ -133,12 +146,12 @@ spec:
         args: {{{args}}}{{^args}}[]{{/args}}
         resources:
           requests:
-            cpu:  {{cpus}}m
+            cpu:  {{cpus}}
             memory: {{memory}}M
         {{#isUntrusted}}
           limits:
             memory:  {{memoryLimit}}M
-            cpu: {{cpusLimit}}m
+            cpu: {{cpusLimit}}
             ephemeral-storage: {{storageLimit}}M
         {{/isUntrusted}}
         ports:

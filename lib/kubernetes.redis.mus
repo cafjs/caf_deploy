@@ -39,7 +39,8 @@ spec:
       automountServiceAccountToken: false
       securityContext:
         runAsUser: 1003
-        supplementalGroups: [1004]
+        runAsGroup: 1004
+        fsGroup: 1004
       {{#isDedicatedVolume}}
       initContainers:
       - name: init-volume
@@ -72,12 +73,12 @@ spec:
         args: ["--appendonly", "yes"]
         resources:
           requests:
-            cpu: {{cpus}}m
+            cpu: {{cpus}}
             memory: {{memory}}M
         {{#isUntrusted}}
           limits:
             memory: {{memoryLimit}}M
-            cpu: {{cpusLimit}}m
+            cpu: {{cpusLimit}}
         {{/isUntrusted}}
         ports:
         - containerPort: 6379

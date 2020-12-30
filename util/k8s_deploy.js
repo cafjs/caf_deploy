@@ -21,17 +21,21 @@ const usage = function() {
 const that = {
 
     async create(deployer, args) {
-        if (args.length !== 4) {
+        if (args.length < 4) {
             console.log('Usage: k8s_deploy.js create <id> <image>' +
-                        ' <isUntrusted> <plan>');
+                        ' <isUntrusted> <plan> [<timestamp>]');
             process.exit(1);
         }
         const id = args.shift();
         const image = args.shift();
         const isUntrusted = (args.shift() === 'true');
         const plan = args.shift();
-
-        await deployer.__ca_createApp__({id, image, isUntrusted, plan});
+        const timestamp = args.shift();
+        const options = {id, image, isUntrusted, plan};
+        if (timestamp) {
+            options.timestamp = timestamp;
+        }
+        await deployer.__ca_createApp__(options);
         console.log('OK');
         deployer.__ca_shutdown__(null, function() {});
     },
@@ -65,19 +69,20 @@ const that = {
     },
 
     async delete(deployer, args) {
-        if (args.length !== 1) {
-            console.log('Usage: k8s_deploy.js delete <id>');
+        if (args.length !== 2) {
+            console.log('Usage: k8s_deploy.js delete <id> <keepData>');
             process.exit(1);
         }
         const id = args.shift();
+        const keepData = (args.shift() === 'true');
         await deployer.__ca_statAll__();
         const deployed = deployer.__ca_statApp__(id);
         if (!deployed || !deployed.props) {
             console.log('Missing app, forcing a delete');
-            await deployer.__ca_deleteApp__({id});
+            await deployer.__ca_deleteApp__({id, keepData});
         } else {
             const timestamp = deployed.props.redis.timestamp;
-            await deployer.__ca_deleteApp__({id, timestamp});
+            await deployer.__ca_deleteApp__({id, timestamp, keepData});
         }
         console.log('OK');
         deployer.__ca_shutdown__(null, function() {});

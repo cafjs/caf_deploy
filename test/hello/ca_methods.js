@@ -17,21 +17,21 @@ limitations under the License.
 "use strict";
 
 exports.methods = {
-    "__ca_init__" : function(cb) {
+    async __ca_init__() {
         this.$.log.debug("++++++++++++++++Calling init");
         this.state.pulses = 0;
         this.state.apps = {};
         this.state.pending = {};
         this.$.deploy.setHandleReplyMethod('handleReply');
-        cb(null);
+        return [];
     },
-    "__ca_resume__" : function(cp, cb) {
+    async __ca_resume__(cp) {
         this.$.log.debug("++++++++++++++++Calling resume: pulses=" +
                          this.state.pulses);
 
-        cb(null);
+        return [];
     },
-    "__ca_pulse__" : function(cb) {
+    async __ca_pulse__() {
         var self = this;
         this.state.pulses = this.state.pulses + 1;
         this.$.log.debug('<<< Calling Pulse>>>' + this.state.pulses);
@@ -42,56 +42,54 @@ exports.methods = {
         var all = this.$.deploy.statApps(ids);
         this.$.log.debug('Apps:' + JSON.stringify(all));
         this.$.log.debug('Pending:' + JSON.stringify(this.state.pending));
-        cb(null);
+        return [];
     },
-    handleReply: function(reqId, err, data, cb) {
+    async handleReply(reqId, err, data) {
         this.$.log.debug('Handle id:' + reqId + ' err:' + JSON.stringify(err) +
                          'data:' + JSON.stringify(data));
         delete this.state.pending[reqId];
-        cb(null);
+        return [];
     },
-    statApps: function(cb) {
+    async statApps() {
         var self = this;
         var ids = Object.keys(this.state.apps)
                 .map(function(x) {
                     return  self.state.apps[x];
                 });
         var all = this.$.deploy.statApps(ids);
-        cb(null, all);
+        return [null, all];
     },
-    getAllRedisPorts: function(cb) {
-        cb(null, this.$.deploy.getAllRedisPorts());
-    },
-    addApp: function(appLocalName, image, options, cb) {
-        var id = this.$.deploy.createApp(appLocalName, image, options);
+    async addApp(appLocalName, image, isUntrusted, plan) {
+        var id = this.$.deploy.createApp(appLocalName, image, isUntrusted,
+                                         plan, null, null);
         this.state.apps[appLocalName] = id;
         this.state.pending[id] = (new Date()).getTime();
-        cb(null, id);
+        return [null, id];
     },
-    deleteApp: function(appLocalName, cb) {
+    async deleteApp(appLocalName) {
         var id =  this.state.apps[appLocalName];
         if (id) {
-            var reqId = this.$.deploy.deleteApp(id);
+            var reqId = this.$.deploy.deleteApp(id, false);
             this.state.pending[reqId] = (new Date()).getTime();
         }
-        cb(null);
+        return [];
     },
 
-    restartApp: function(appLocalName, cb) {
+    async restartApp(appLocalName) {
         var id =  this.state.apps[appLocalName];
         if (id) {
             var reqId = this.$.deploy.restartApp(id);
             this.state.pending[reqId] = (new Date()).getTime();
         }
-        cb(null);
+        return [];
     },
 
-    flexApp:  function(appLocalName, instances, cb) {
+    async flexApp(appLocalName, plan, numberOfCAs) {
         var id =  this.state.apps[appLocalName];
         if (id) {
-            var reqId = this.$.deploy.flexApp(id, instances);
+            var reqId = this.$.deploy.flexApp(id, plan, numberOfCAs);
             this.state.pending[reqId] = (new Date()).getTime();
         }
-        cb(null);
+        return [];
     }
 };

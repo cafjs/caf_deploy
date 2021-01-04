@@ -54,7 +54,7 @@ spec:
         - containerPort: 80
           name: http-port
       nodeSelector:
-        cloud.google.com/gke-nodepool: default-pool
+        cafjs.com/purpose: default
       volumes:
       - name: ssl
         secret:

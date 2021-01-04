@@ -94,7 +94,7 @@ const that = {
             process.exit(1);
         }
         const id = args.shift();
-        await deployer.__ca_restartApp__({id});
+        await deployer.__ca_restartApp__(id);
         console.log('OK');
         deployer.__ca_shutdown__(null, function() {});
     }

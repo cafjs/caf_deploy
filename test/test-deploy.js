@@ -56,7 +56,7 @@ module.exports = {
                         from : from1
                     });
                     s1.onopen = function() {
-                        s1.addApp('myfoo1', 'gcr.io/cafjs-k8/root-helloworld', {}, cb);
+                        s1.addApp('myfoo1', 'gcr.io/cafjs-k8/root-helloworld', true , 'gold', cb);
                     };
                 },
                 function(cb) {
@@ -67,22 +67,22 @@ module.exports = {
                             console.log(data);
                             cb(null);
                         });
-                    }, 60000);
+                    }, 120000);
                 },
                 function(cb) {
                     setTimeout(function() {
-                        s1.flexApp('myfoo1', 3, cb);
+                        s1.flexApp('myfoo1', 'gold', 251, cb);
                     }, 30000);
                 },
                 function(cb) {
                     setTimeout(function() {
                         s1.restartApp('myfoo1', cb);
-                    }, 15000);
+                    }, 60000);
                 },
                 function(cb) {
                     setTimeout(function() {
                         s1.deleteApp('myfoo1', cb);
-                    }, 10000);
+                    }, 60000);
                 },
                 function(cb) {
                     s1.onclose = function(err) {

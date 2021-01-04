@@ -70,7 +70,7 @@ spec:
           readOnly: false
           subPath: redis-{{{id}}}-{{{timestamp}}}
         {{/isDedicatedVolume}}
-        args: ["--appendonly", "yes"]
+        args: ["--appendonly", "yes", "--auto-aof-rewrite-percentage", "1000", "--auto-aof-rewrite-min-size",  "4mb"]
         resources:
           requests:
             cpu: {{cpus}}

@@ -19,8 +19,8 @@
             "templateFile" : "process.env.REDIS_TEMPLATE_FILE||kubernetes.redis.mus",
             "image" : "process.env.REDIS_IMAGE||redis:6",
             "nodePool": {
-                "poolKey": "process.env.REDIS_NODE_POOL_KEY||[\"cloud.google.com/gke-nodepool\",\"cloud.google.com/gke-nodepool\", \"cloud.google.com/gke-nodepool\"]",
-                "poolValue": "process.env.REDIS_NODE_POOL_VALUE||[\"default-pool\",\"default-pool\",\"default-pool\"]",
+                "poolKey": "process.env.REDIS_NODE_POOL_KEY||[\"cafjs.com/purpose\",\"cafjs.com/purpose\", \"cafjs.com/purpose\"]",
+                "poolValue": "process.env.REDIS_NODE_POOL_VALUE||[\"default\",\"default\",\"default\"]",
                 "isGvisor": "process.env.REDIS_NODE_POOL_GVISOR||[false,false,false]"
             },
             "request": {
@@ -29,7 +29,7 @@
             },
             "limit" : {
                 "cpus": "process.env.REDIS_LIMIT_CPUS||[-1, 0.02, 0.055]",
-                "memory": "process.env.REDIS_LIMIT_MEMORY||[-1, 48, 64]"
+                "memory": "process.env.REDIS_LIMIT_MEMORY||[-1, 80, 125]"
             },
             "deltaRequest": {
                 "cpus": "process.env.REDIS_DELTA_REQUEST_CPUS||[0.05, 0.05, 0.05]",
@@ -37,7 +37,7 @@
             },
             "deltaLimit" : {
                 "cpus": "process.env.REDIS_DELTA_LIMIT_CPUS||[0, 0.055, 0.055]",
-                "memory": "process.env.REDIS_DELTA_LIMIT_MEMORY||[0, 64, 64]"
+                "memory": "process.env.REDIS_DELTA_LIMIT_MEMORY||[0, 125, 125]"
             },
             "updateRatio": "process.env.REDIS_UPDATE_RATIO||5",
             "maxNFSInstances": "process.env.REDIS_MAX_NFS_INSTANCES||2",
@@ -48,19 +48,19 @@
             "k8SNamespace" : "process.env.APP_K8S_NAMESPACE||apps",
             "templateFile": "process.env.APP_TEMPLATE_FILE||kubernetes.app.mus",
             "nodePool": {
-                "poolKey": "process.env.APP_NODE_POOL_KEY||[\"cloud.google.com/gke-nodepool\", \"cafjs.com/purpose\", \"cafjs.com/purpose\"]",
-                "poolValue": "process.env.APP_NODE_POOL_VALUE||[\"default-pool\",\"incubator\",\"scaleout\"]",
+                "poolKey": "process.env.APP_NODE_POOL_KEY||[\"cafjs.com/purpose\", \"cafjs.com/purpose\", \"cafjs.com/purpose\"]",
+                "poolValue": "process.env.APP_NODE_POOL_VALUE||[\"default\",\"incubator\",\"scaleout\"]",
                 "isGvisor": "process.env.APP_NODE_POOL_GVISOR||[false,false,false]"
             },
             "request": {
                 "cpus": "process.env.APP_REQUEST_CPUS||[0.22, 0.02, 0.22]",
-                "memory": "process.env.APP_REQUEST_MEMORY||[192, 128, 160]"
+                "memory": "process.env.APP_REQUEST_MEMORY||[128, 96, 128]"
             },
             "limit" : {
-                "cpus": "process.env.APP_LIMIT_CPUS||[-1, 0.022, 0.24]",
-                "memory": "process.env.APP_LIMIT_MEMORY||[-1, 160, 180]",
+                "cpus": "process.env.APP_LIMIT_CPUS||[-1, 0.3, 0.3]",
+                "memory": "process.env.APP_LIMIT_MEMORY||[-1, 128, 160]",
                 "storage": "process.env.APP_LIMIT_STORAGE||[-1, 64, 256]",
-                "egress": "process.env.APP_LIMIT_EGRESS||[-1, 1, 2]"
+                "egress": "process.env.APP_LIMIT_EGRESS||[-1, 8, 16]"
             },
             "maxInstances" : "process.env.APP_MAX_INSTANCES||100",
             "args": "process.env.APP_ARGS||[\"--max_old_space_size=$(NODE_MEMORY)\", \"./index.js\"]"

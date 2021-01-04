@@ -16,35 +16,66 @@
             "description": "Shared plug to deploy apps in Mesos/Marathon\n Properties: \n",
             "env": {
                 "targetPaaS": "process.env.TARGET_PAAS||kubernetes",
-                "refreshInterval" : "process.env.REFRESH_INTERVAL||1000",
                 "useK8SConfig" : "process.env.USE_K8S_CONFIG||true",
+                "refreshInterval" : "process.env.REFRESH_INTERVAL||1000",
+                "appSuffix" : "process.env.APP_SUFFIX||cafjs.com",
+                "isUntrusted": "process.env.IS_UNTRUSTED||false",
+                "isIncubator": "process.env.IS_INCUBATOR||false",
+                "isDeployer": "process.env.APP_IS_DEPLOYER||false",
+                "isPeople": "process.env.APP_IS_PEOPLE||false",
+                "isAccounts": "process.env.APP_IS_ACCOUNTS||false",
+                "plans" : {"bronce": 1000, "silver": 500, "gold": 250, "platinum": 125},
+                "ratioIncubator": "process.env.RATIO_INCUBATOR||0.1",
                 "redis" : {
                     "k8SNamespace" : "process.env.REDIS_K8S_NAMESPACE||redis",
                     "templateFile" : "process.env.REDIS_TEMPLATE_FILE||kubernetes.redis.mus",
                     "image" : "process.env.REDIS_IMAGE||redis:6",
-                    "isUntrusted": "process.env.IS_UNTRUSTED||false",
-                    "cpus" : "process.env.REDIS_CPUS||0.02",
-                    "cpusLimit" : "process.env.REDIS_CPUS_LIMIT||0.1",
-                    "memory" : "process.env.REDIS_MEMORY||64.0",
-                    "memoryLimit" : "process.env.REDIS_MEMORY_LIMIT||128.0"
+                    "nodePool": {
+                        "poolKey": "process.env.REDIS_NODE_POOL_KEY||[\"cafjs.com/purpose\",\"cafjs.com/purpose\", \"cafjs.com/purpose\"]",
+                        "poolValue": "process.env.REDIS_NODE_POOL_VALUE||[\"default\",\"default\",\"default\"]",
+                        "isGvisor": "process.env.REDIS_NODE_POOL_GVISOR||[false,false,false]"
+                    },
+                    "request": {
+                        "cpus": "process.env.REDIS_REQUEST_CPUS||[0.05, 0.01, 0.05]",
+                        "memory": "process.env.REDIS_REQUEST_MEMORY||[50, 32, 50]"
+                    },
+            "limit" : {
+                "cpus": "process.env.REDIS_LIMIT_CPUS||[-1, 0.02, 0.055]",
+                "memory": "process.env.REDIS_LIMIT_MEMORY||[-1, 48, 64]"
+            },
+                    "deltaRequest": {
+                        "cpus": "process.env.REDIS_DELTA_REQUEST_CPUS||[0.05, 0.05, 0.05]",
+                        "memory": "process.env.REDIS_DELTA_REQUEST_MEMORY||[50, 50, 50]"
+                    },
+                    "deltaLimit" : {
+                        "cpus": "process.env.REDIS_DELTA_LIMIT_CPUS||[0, 0.055, 0.055]",
+                        "memory": "process.env.REDIS_DELTA_LIMIT_MEMORY||[0, 64, 64]"
+                    },
+                    "updateRatio": "process.env.REDIS_UPDATE_RATIO||5",
+                    "maxNFSInstances": "process.env.REDIS_MAX_NFS_INSTANCES||2",
+                    "dedicatedVolumeSize": "process.env.REDIS_DEDICATED_VOLUME_SIZE||[10,10,10]",
+                    "deltaDedicatedVolumeSize": "process.env.REDIS_DELTA_DEDICATED_VOLUME_SIZE||[10,10,10]"
                 },
                 "app" : {
                     "k8SNamespace" : "process.env.APP_K8S_NAMESPACE||apps",
-                    "templateFile" : "process.env.APP_TEMPLATE_FILE||kubernetes.app.mus",
-                    "cpus" : "process.env.APP_CPUS||0.02",
-                    "cpusLimit" : "process.env.APP_CPUS_LIMIT||0.1",
-                    "args": "process.env.APP_ARGS||[\"--max_old_space_size=96\", \"./index.js\"]",
-                    "memory" : "process.env.APP_MEMORY||96.0",
-                    "memoryLimit" : "process.env.APP_MEMORY_LIMIT||128.0",
-                    "storage" : "process.env.APP_STORAGE||16.0",
-                    "storageLimit" : "process.env.APP_STORAGE_LIMIT||32.0",
-                    "instances": "process.env.APP_INSTANCES||1",
-                    "isDeployer": "process.env.APP_IS_DEPLOYER||false",
-                    "isAccounts": "process.env.APP_IS_ACCOUNTS||false",
-                    "isPeople": "process.env.APP_IS_PEOPLE||false",
-                    "isUntrusted": "process.env.IS_UNTRUSTED||false",
-                    "appSuffix" : "$._.env.appSuffix",
-                    "services" :["redis"]
+                    "templateFile": "process.env.APP_TEMPLATE_FILE||kubernetes.app.mus",
+                    "nodePool": {
+                        "poolKey": "process.env.APP_NODE_POOL_KEY||[\"cafjs.com/purpose\", \"cafjs.com/purpose\", \"cafjs.com/purpose\"]",
+                        "poolValue": "process.env.APP_NODE_POOL_VALUE||[\"default\",\"incubator\",\"scaleout\"]",
+                        "isGvisor": "process.env.APP_NODE_POOL_GVISOR||[false,false,false]"
+                    },
+                    "request": {
+                        "cpus": "process.env.APP_REQUEST_CPUS||[0.22, 0.02, 0.22]",
+                        "memory": "process.env.APP_REQUEST_MEMORY||[128, 96, 128]"
+                    },
+                    "limit" : {
+                        "cpus": "process.env.APP_LIMIT_CPUS||[-1, 0.022, 0.24]",
+                        "memory": "process.env.APP_LIMIT_MEMORY||[-1, 128, 160]",
+                        "storage": "process.env.APP_LIMIT_STORAGE||[-1, 64, 256]",
+                        "egress": "process.env.APP_LIMIT_EGRESS||[-1, 1, 2]"
+                    },
+                    "maxInstances" : "process.env.APP_MAX_INSTANCES||100",
+                    "args": "process.env.APP_ARGS||[\"--max_old_space_size=$(NODE_MEMORY)\", \"./index.js\"]"
                 }
             }
         }

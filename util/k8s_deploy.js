@@ -4,6 +4,24 @@ const caf_core = require('caf_core');
 const caf_comp = caf_core.caf_components;
 const myUtils = caf_comp.myUtils;
 const assert = require('assert');
+const path = require('path');
+const REGEXP_BASH_VAR = /^[a-zA-Z][a-zA-Z0-9_]*$/;
+
+const loadProps = function(p) {
+    const newP = path.resolve(process.cwd(), p);
+    try {
+        const props = require(newP);
+        const envProps = [];
+        Object.keys(props).forEach((k) => {
+            assert(k.match(REGEXP_BASH_VAR), `Invalid key ${k}`);
+            envProps.push({key: k, value: JSON.stringify(props[k])});
+        });
+        return envProps;
+    } catch (ex) {
+        console.log(ex);
+        return null;
+    }
+};
 
 const load = function($, spec, name, modules, cb) {
     modules = modules || [];
@@ -23,17 +41,27 @@ const that = {
     async create(deployer, args) {
         if (args.length < 4) {
             console.log('Usage: k8s_deploy.js create <id> <image>' +
-                        ' <isUntrusted> <plan> [<timestamp>]');
+                        ' <isUntrusted> <plan> [<propsFile.json>|null] ' +
+                        '[<timestamp>]');
             process.exit(1);
         }
         const id = args.shift();
         const image = args.shift();
         const isUntrusted = (args.shift() === 'true');
         const plan = args.shift();
+        let propsFile = args.shift();
+        propsFile = propsFile === 'null' ? null : propsFile;
         const timestamp = args.shift();
         const options = {id, image, isUntrusted, plan};
         if (timestamp) {
             options.timestamp = timestamp;
+        }
+        if (propsFile) {
+            const props = loadProps(propsFile);
+            console.log(propsFile);
+            if (props) {
+                options.envProps = props;
+            }
         }
         await deployer.__ca_createApp__(options);
         console.log('OK');

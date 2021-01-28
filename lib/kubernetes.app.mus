@@ -67,6 +67,10 @@ spec:
         image: {{{image}}}
         imagePullPolicy: Always
         env:
+        {{#envProps}}
+        - name: {{{key}}}
+          value: {{{value}}}
+        {{/envProps}}
         - name: NODE_MEMORY
           value: "{{{memory}}}"
         {{#isCDN}}

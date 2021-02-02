@@ -6,6 +6,7 @@ The  copyright of the original `CAF` project is assigned to `Hewlett-Packard Dev
 
 ## 0.4.5
 - Add custom app environment properties
+- Set NODE_ENV to production by default
 
 ## 0.4.4
 - Add paypal credentials

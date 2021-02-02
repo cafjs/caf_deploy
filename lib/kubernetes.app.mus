@@ -71,6 +71,8 @@ spec:
         - name: {{{key}}}
           value: {{{value}}}
         {{/envProps}}
+        - name: NODE_ENV
+          value: production
         - name: NODE_MEMORY
           value: "{{{memory}}}"
         {{#isCDN}}

@@ -25,7 +25,7 @@ See {@link module:caf_deploy/plug_deploy}
 ### framework.json
 
 Default for Kubernetes deployment:
-
+```
     {
         "module": "caf_deploy#plug",
         "name": "deploy",
@@ -64,26 +64,27 @@ Default for Kubernetes deployment:
             }
         }
     }
-
+```
 
 ### ca.json
 
-        {
-            "module": "caf_deploy#plug_ca",
-            "name": "deploy",
-            "description": "Manages deployments for this CA.",
-            "env" : {
-                "maxRetries" : "$._.env.maxRetries",
-                "retryDelay" : "$._.env.retryDelay"
-            },
-            "components" : [
-                {
-                    "module": "caf_deploy#proxy",
-                    "name": "proxy",
-                    "description": "Provides deployment API.",
-                    "env" : {
-
-                    }
+```
+    {
+        "module": "caf_deploy#plug_ca",
+        "name": "deploy",
+        "description": "Manages deployments for this CA.",
+        "env" : {
+            "maxRetries" : "$._.env.maxRetries",
+            "retryDelay" : "$._.env.retryDelay"
+        },
+        "components" : [
+            {
+                "module": "caf_deploy#proxy",
+                "name": "proxy",
+                "description": "Provides deployment API.",
+                "env" : {
                 }
-            ]
-        }
+            }
+        ]
+    }
+```

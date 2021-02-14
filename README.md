@@ -11,6 +11,11 @@ See https://www.cafjs.com
 
 This repository contains a `Caf.js` lib to deploy applications using Kubernetes.
 
+## Dependencies Warning
+
+To eliminate expensive dependencies for apps in the workspace that do not need `caf_deploy`, the package  `kubernetes-client@^8.3.6` has been declared as an optional dependency even though it is always needed.
+
+Applications that depend on `caf_deploy` should also include `kubernetes-client@^8.3.6` in package.json as a normal dependence.
 
 ## API
 

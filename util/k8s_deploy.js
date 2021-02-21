@@ -86,6 +86,23 @@ const that = {
         deployer.__ca_shutdown__(null, function() {});
     },
 
+    async changeImage(deployer, args) {
+        if (args.length !== 2) {
+            console.log('Usage: k8s_deploy.js changeImage <id> <image>');
+            process.exit(1);
+        }
+        const id = args.shift();
+        const image = args.shift();
+        await deployer.__ca_statAll__();
+        const deployed = deployer.__ca_statApp__(id);
+        assert(deployed, 'Unknown app');
+        const currentProps = deployed.props;
+
+        await deployer.__ca_changeImage__({id, image, currentProps});
+        console.log('OK');
+        deployer.__ca_shutdown__(null, function() {});
+    },
+
     async stat(deployer, args) {
         if (args.length !== 0) {
             console.log('Usage: k8s_deploy.js stat');

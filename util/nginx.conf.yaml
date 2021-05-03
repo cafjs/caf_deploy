@@ -25,12 +25,12 @@ data:
       server {
            listen 443 ssl;
            server_name www.cafjs.com;
-           return 301 https://cafjs.github.io$request_uri;
+           return 301 https://www.cafjslabs.com$request_uri;
       }
       server {
            listen 443 ssl;
            server_name cafjs.com;
-           return 301 https://cafjs.github.io$request_uri;
+           return 301 https://cafjslabs.com$request_uri;
       }
       server {
            listen 443 ssl;
